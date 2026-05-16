@@ -45,7 +45,7 @@ public class TracesController {
                 throw new ResourceNotFoundException("Incident not found with id: " + incidentId);
             }
 
-            List<Trace> traces = traceRepository.findByIncidentId(incidentId);
+            List<Trace> traces = traceRepository.findByIncident_Id(incidentId);
             return ResponseEntity.ok(ApiResponse.success(traces));
         } catch (ResourceNotFoundException e) {
             log.warn("Incident not found: {}", incidentId);

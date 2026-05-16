@@ -84,7 +84,7 @@ public class TimelineService {
             throw new ResourceNotFoundException("Incident not found with id: " + incidentId);
         }
 
-        return timelineRepository.findByIncidentIdOrderByEventTimeAsc(incidentId);
+        return timelineRepository.findByIncident_IdOrderByEventTimeAsc(incidentId);
     }
 
     /**
@@ -97,6 +97,6 @@ public class TimelineService {
             throw new ResourceNotFoundException("Incident not found with id: " + incidentId);
         }
 
-        return timelineRepository.findByIncidentIdAndEventTimeBetween(incidentId, start, end);
+        return timelineRepository.findByIncident_IdAndEventTimeBetween(incidentId, start, end);
     }
 }

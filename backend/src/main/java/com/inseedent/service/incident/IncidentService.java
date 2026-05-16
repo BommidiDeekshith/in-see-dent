@@ -3,6 +3,8 @@ package com.inseedent.service.incident;
 import com.inseedent.domain.Incident;
 import com.inseedent.dto.IncidentDTO;
 import com.inseedent.exception.ResourceNotFoundException;
+import com.inseedent.kafka.IncidentEvent;
+import com.inseedent.kafka.IncidentEventProducer;
 import com.inseedent.repository.IncidentRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +23,9 @@ public class IncidentService {
 
     @Autowired
     private IncidentRepository incidentRepository;
+
+    @Autowired(required = false)
+    private IncidentEventProducer incidentEventProducer;
 
     private static final int DEFAULT_PAGE_SIZE = 10;
 
@@ -46,6 +51,15 @@ public class IncidentService {
 
         Incident savedIncident = incidentRepository.save(incident);
         log.info("Incident created successfully with id: {}", savedIncident.getId());
+
+        if (incidentEventProducer != null) {
+            incidentEventProducer.publish(IncidentEvent.builder()
+                    .eventType("INCIDENT_CREATED")
+                    .incidentId(savedIncident.getId())
+                    .title(savedIncident.getTitle())
+                    .severity(savedIncident.getSeverity())
+                    .build());
+        }
 
         return mapToDTO(savedIncident);
     }

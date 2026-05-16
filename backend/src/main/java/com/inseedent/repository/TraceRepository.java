@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface TraceRepository extends JpaRepository<Trace, Long> {
-    List<Trace> findByIncidentId(Long incidentId);
+    List<Trace> findByIncident_Id(Long incidentId);
     
     Optional<Trace> findByTraceId(String traceId);
     

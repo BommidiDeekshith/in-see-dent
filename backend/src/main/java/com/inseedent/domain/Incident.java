@@ -27,7 +27,8 @@ public class Incident {
     @Column(nullable = false)
     private String status; // open, investigating, resolved, closed
 
-    @Column(columnDefinition = "text[]")
+    @Convert(converter = com.inseedent.config.StringArrayConverter.class)
+    @Column(columnDefinition = "TEXT")
     private String[] affectedServices;
 
     @Column(nullable = false)

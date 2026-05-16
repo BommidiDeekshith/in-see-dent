@@ -1,0 +1,13 @@
+# Local dev: no Kafka required. Use: mvn spring-boot:run -Dspring-boot.run.profiles=dev
+
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration
+
+kafka:
+  enabled: false
+
+logging:
+  level:
+    org.springframework.security: INFO

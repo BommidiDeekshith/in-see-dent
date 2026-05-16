@@ -47,7 +47,7 @@ public class MetricsController {
                 throw new ResourceNotFoundException("Incident not found with id: " + incidentId);
             }
 
-            List<Metric> metrics = metricRepository.findByIncidentId(incidentId);
+            List<Metric> metrics = metricRepository.findByIncident_Id(incidentId);
             return ResponseEntity.ok(ApiResponse.success(metrics));
         } catch (ResourceNotFoundException e) {
             log.warn("Incident not found: {}", incidentId);

@@ -45,7 +45,7 @@ public class AlertController {
                 throw new ResourceNotFoundException("Incident not found with id: " + incidentId);
             }
 
-            List<Alert> alerts = alertRepository.findByIncidentId(incidentId);
+            List<Alert> alerts = alertRepository.findByIncident_Id(incidentId);
             return ResponseEntity.ok(ApiResponse.success(alerts));
         } catch (ResourceNotFoundException e) {
             log.warn("Incident not found: {}", incidentId);

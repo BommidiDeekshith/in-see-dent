@@ -1,5 +1,3 @@
 com/inseedent/repository/EmbeddingRepository.class
-com/inseedent/config/JwtTokenProvider.class
 com/inseedent/domain/Embedding.class
-com/inseedent/config/JwtAuthenticationFilter.class
 com/inseedent/domain/Embedding$EmbeddingBuilder.class

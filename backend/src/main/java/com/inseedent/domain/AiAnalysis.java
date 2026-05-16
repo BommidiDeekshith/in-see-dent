@@ -26,19 +26,20 @@ public class AiAnalysis {
 
     private Double confidenceScore;
 
-    @Column(columnDefinition = "text[]")
+    @Convert(converter = com.inseedent.config.StringArrayConverter.class)
+    @Column(columnDefinition = "TEXT")
     private String[] affectedServices;
 
     @Column(columnDefinition = "text")
     private String summary;
 
-    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "TEXT")
     private String findings; // JSON
 
     @Column(columnDefinition = "text")
     private String remediationSuggestions;
 
-    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "TEXT")
     private String analysisData; // JSON
 
     private LocalDateTime startedAt;

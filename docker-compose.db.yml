@@ -1,0 +1,22 @@
+# Postgres only — for local dev without full stack
+# Usage: docker compose -f docker-compose.db.yml up -d
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: inseedent
+      POSTGRES_USER: inseedent
+      POSTGRES_PASSWORD: inseedent
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U inseedent"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres_data:

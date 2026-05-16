@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface MetricRepository extends JpaRepository<Metric, Long> {
-    List<Metric> findByIncidentId(Long incidentId);
+    List<Metric> findByIncident_Id(Long incidentId);
     
     List<Metric> findByServiceNameAndTimestampBetween(String serviceName, LocalDateTime start, LocalDateTime end);
 }

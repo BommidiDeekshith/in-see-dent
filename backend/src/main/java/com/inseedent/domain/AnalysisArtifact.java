@@ -29,8 +29,8 @@ public class AnalysisArtifact {
 
     private Double confidence;
 
-    @Column(columnDefinition = "jsonb")
-    private String rawData; // JSON
+    @Column(columnDefinition = "TEXT")
+    private String rawData;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

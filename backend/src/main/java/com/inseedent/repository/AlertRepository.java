@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface AlertRepository extends JpaRepository<Alert, Long> {
-    List<Alert> findByIncidentId(Long incidentId);
+    List<Alert> findByIncident_Id(Long incidentId);
     
     List<Alert> findByTriggeredAtBetween(LocalDateTime start, LocalDateTime end);
 }

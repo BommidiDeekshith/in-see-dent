@@ -52,6 +52,7 @@ public class AiAnalysis {
     private LocalDateTime updatedAt;
 
     @OneToMany(mappedBy = "analysis", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private java.util.List<AnalysisArtifact> artifacts = new java.util.ArrayList<>();
 
     @PrePersist

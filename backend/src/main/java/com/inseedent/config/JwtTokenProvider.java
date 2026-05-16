@@ -53,7 +53,7 @@ public class JwtTokenProvider {
                     .subject(username)
                     .issuedAt(now)
                     .expiration(expiryDate)
-                    .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                    .signWith(getSigningKey())
                     .compact();
         } catch (JwtException e) {
             log.error("Failed to generate JWT token for username: {}", username, e);
@@ -66,11 +66,11 @@ public class JwtTokenProvider {
      */
     public String getUsernameFromToken(String token) {
         try {
-            return Jwts.parser()
-                    .verifyWith(getSigningKey())
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
                     .build()
-                    .parseSignedClaims(token)
-                    .getPayload()
+                    .parseClaimsJws(token)
+                    .getBody()
                     .getSubject();
         } catch (JwtException e) {
             log.error("Failed to extract username from token", e);
@@ -83,10 +83,10 @@ public class JwtTokenProvider {
      */
     public boolean validateToken(String token) {
         try {
-            Jwts.parser()
-                    .verifyWith(getSigningKey())
+            Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
                     .build()
-                    .parseSignedClaims(token);
+                    .parseClaimsJws(token);
             log.debug("Token validated successfully");
             return true;
         } catch (SecurityException e) {
@@ -110,11 +110,11 @@ public class JwtTokenProvider {
      */
     public boolean isTokenExpired(String token) {
         try {
-            Claims claims = Jwts.parser()
-                    .verifyWith(getSigningKey())
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
                     .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
+                    .parseClaimsJws(token)
+                    .getBody();
             return claims.getExpiration().before(new Date());
         } catch (ExpiredJwtException e) {
             log.debug("Token is expired");
@@ -130,11 +130,11 @@ public class JwtTokenProvider {
      */
     public long getTokenExpirationTime(String token) {
         try {
-            Claims claims = Jwts.parser()
-                    .verifyWith(getSigningKey())
+            Claims claims = Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
                     .build()
-                    .parseSignedClaims(token)
-                    .getPayload();
+                    .parseClaimsJws(token)
+                    .getBody();
             return claims.getExpiration().getTime();
         } catch (JwtException e) {
             log.error("Error getting token expiration time", e);

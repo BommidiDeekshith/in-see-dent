@@ -20,6 +20,15 @@ spring:
     enabled: true
     locations: classpath:db/migration
 
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP:localhost:9092}
+    consumer:
+      group-id: inseedent-backend
+      auto-offset-reset: earliest
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
 server:
   port: 8080
   servlet:
@@ -53,6 +62,18 @@ vector-db:
   pgvector:
     enabled: true
 
+# AI Service
+ai:
+  service:
+    url: ${AI_SERVICE_URL:http://localhost:8090}
+    timeout-seconds: 120
+
+# Kafka
+kafka:
+  enabled: ${KAFKA_ENABLED:false}
+  topics:
+    incidents: inseedent.incidents
+
 # Observability Mock Configuration
 observability:
   mock:
@@ -62,3 +83,14 @@ observability:
       enabled: true
     otel:
       enabled: true
+
+# OpenAPI
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+
+# CORS for frontend
+cors:
+  allowed-origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:3000}

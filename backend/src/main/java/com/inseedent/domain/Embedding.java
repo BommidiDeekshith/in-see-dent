@@ -24,8 +24,8 @@ public class Embedding {
     @Column(columnDefinition = "text", nullable = false)
     private String content;
 
-    @Column(name = "embedding", columnDefinition = "vector(1536)")
-    private String embeddingVector; // Stored as string, LangChain will handle actual vector operations
+    @Column(name = "embedding", columnDefinition = "TEXT")
+    private String embeddingVector;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

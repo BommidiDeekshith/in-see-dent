@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface IncidentTimelineRepository extends JpaRepository<IncidentTimeline, Long> {
-    List<IncidentTimeline> findByIncidentIdOrderByEventTimeAsc(Long incidentId);
+    List<IncidentTimeline> findByIncident_IdOrderByEventTimeAsc(Long incidentId);
     
-    List<IncidentTimeline> findByIncidentIdAndEventTimeBetween(Long incidentId, LocalDateTime start, LocalDateTime end);
+    List<IncidentTimeline> findByIncident_IdAndEventTimeBetween(Long incidentId, LocalDateTime start, LocalDateTime end);
 }

@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface DeploymentRepository extends JpaRepository<Deployment, Long> {
-    List<Deployment> findByIncidentId(Long incidentId);
+    List<Deployment> findByIncident_Id(Long incidentId);
     
     List<Deployment> findByServiceNameAndDeploymentTimeBetween(String serviceName, LocalDateTime start, LocalDateTime end);
 }

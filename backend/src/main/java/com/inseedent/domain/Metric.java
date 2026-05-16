@@ -26,13 +26,14 @@ public class Metric {
 
     private String metricType; // gauge, counter, histogram, summary
 
-    private Double value;
+    @Column(name = "metric_value")
+    private Double metricValue;
 
     @Column(nullable = false)
     private LocalDateTime timestamp;
 
-    @Column(columnDefinition = "jsonb")
-    private String labels; // JSON
+    @Column(columnDefinition = "TEXT")
+    private String labels;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

@@ -57,7 +57,7 @@ CREATE TABLE metrics (
   metric_name VARCHAR(255) NOT NULL,
   service_name VARCHAR(255),
   metric_type VARCHAR(50), -- gauge, counter, histogram, summary
-  value DOUBLE PRECISION,
+  metric_value DOUBLE PRECISION,
   timestamp TIMESTAMP NOT NULL,
   labels JSONB,
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

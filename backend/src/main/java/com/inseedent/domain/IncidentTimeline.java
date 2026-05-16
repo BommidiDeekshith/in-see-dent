@@ -32,8 +32,8 @@ public class IncidentTimeline {
     @Column(nullable = false)
     private LocalDateTime eventTime;
 
-    @Column(columnDefinition = "jsonb")
-    private String eventData; // JSON
+    @Column(columnDefinition = "TEXT")
+    private String eventData;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;

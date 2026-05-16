@@ -31,8 +31,8 @@ public class Alert {
 
     private String ruleName;
 
-    @Column(columnDefinition = "jsonb")
-    private String alertData; // JSON
+    @Column(columnDefinition = "TEXT")
+    private String alertData;
 
     @Column(nullable = false)
     private LocalDateTime triggeredAt;

@@ -27,7 +27,8 @@ public class Incident {
     @Column(nullable = false)
     private String status; // open, investigating, resolved, closed
 
-    @Column(columnDefinition = "text[]")
+    @Convert(converter = com.inseedent.config.StringArrayConverter.class)
+    @Column(columnDefinition = "TEXT")
     private String[] affectedServices;
 
     @Column(nullable = false)
@@ -48,24 +49,31 @@ public class Incident {
     private User createdBy;
 
     @OneToMany(mappedBy = "incident", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Alert> alerts = new ArrayList<>();
 
     @OneToMany(mappedBy = "incident", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Metric> metrics = new ArrayList<>();
 
     @OneToMany(mappedBy = "incident", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Log> logs = new ArrayList<>();
 
     @OneToMany(mappedBy = "incident", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Trace> traces = new ArrayList<>();
 
     @OneToMany(mappedBy = "incident", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Deployment> deployments = new ArrayList<>();
 
     @OneToMany(mappedBy = "incident", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<AiAnalysis> analyses = new ArrayList<>();
 
     @OneToMany(mappedBy = "incident", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<IncidentTimeline> timeline = new ArrayList<>();
 
     @PrePersist

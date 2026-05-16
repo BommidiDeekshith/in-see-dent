@@ -25,7 +25,8 @@ public class Runbook {
 
     private String serviceName;
 
-    @Column(columnDefinition = "text[]")
+    @Convert(converter = com.inseedent.config.StringArrayConverter.class)
+    @Column(columnDefinition = "TEXT")
     private String[] tags;
 
     @Column(name = "created_at", nullable = false, updatable = false)

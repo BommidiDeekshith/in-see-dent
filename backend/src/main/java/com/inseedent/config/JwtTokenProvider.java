@@ -53,7 +53,7 @@ public class JwtTokenProvider {
                     .subject(username)
                     .issuedAt(now)
                     .expiration(expiryDate)
-                    .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                    .signWith(getSigningKey())
                     .compact();
         } catch (JwtException e) {
             log.error("Failed to generate JWT token for username: {}", username, e);

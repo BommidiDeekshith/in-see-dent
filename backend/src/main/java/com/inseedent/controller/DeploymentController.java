@@ -45,7 +45,7 @@ public class DeploymentController {
                 throw new ResourceNotFoundException("Incident not found with id: " + incidentId);
             }
 
-            List<Deployment> deployments = deploymentRepository.findByIncidentId(incidentId);
+            List<Deployment> deployments = deploymentRepository.findByIncident_Id(incidentId);
             return ResponseEntity.ok(ApiResponse.success(deployments));
         } catch (ResourceNotFoundException e) {
             log.warn("Incident not found: {}", incidentId);

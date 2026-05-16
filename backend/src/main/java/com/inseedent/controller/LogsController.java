@@ -45,7 +45,7 @@ public class LogsController {
                 throw new ResourceNotFoundException("Incident not found with id: " + incidentId);
             }
 
-            List<Log> logs = logRepository.findByIncidentId(incidentId);
+            List<Log> logs = logRepository.findByIncident_Id(incidentId);
             return ResponseEntity.ok(ApiResponse.success(logs));
         } catch (ResourceNotFoundException e) {
             log.warn("Incident not found: {}", incidentId);

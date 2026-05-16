@@ -9,9 +9,9 @@ import java.util.Optional;
 
 @Repository
 public interface AiAnalysisRepository extends JpaRepository<AiAnalysis, Long> {
-    Optional<AiAnalysis> findByIncidentIdOrderByCreatedAtDesc(Long incidentId);
+    Optional<AiAnalysis> findByIncident_IdOrderByCreatedAtDesc(Long incidentId);
     
-    List<AiAnalysis> findByIncidentId(Long incidentId);
+    List<AiAnalysis> findByIncident_Id(Long incidentId);
     
     List<AiAnalysis> findByAnalysisStatus(String status);
 }

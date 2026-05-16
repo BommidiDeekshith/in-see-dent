@@ -3,7 +3,6 @@ package com.inseedent.controller;
 import com.inseedent.dto.IncidentDTO;
 import com.inseedent.exception.ResourceNotFoundException;
 import com.inseedent.service.incident.IncidentService;
-import com.inseedent.service.incident.TimelineService;
 import com.inseedent.util.ApiResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +21,6 @@ public class IncidentController {
 
     @Autowired
     private IncidentService incidentService;
-
-    @Autowired
-    private TimelineService timelineService;
 
     /**
      * List incidents with pagination and filtering

@@ -102,7 +102,7 @@ public class AuthService {
 
         try {
             // Authenticate user
-            Authentication authentication = authenticationManager.authenticate(
+            authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             authRequest.getUsername(),
                             authRequest.getPassword()

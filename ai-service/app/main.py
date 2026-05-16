@@ -5,8 +5,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import Any, Optional
 
-from app.workflow.graph import run_analysis
+import json
+
+from app.llm.client import get_llm_mode, invoke_llm, llm_status
 from app.rag.store import search_similar
+from app.workflow.graph import _load_prompts, run_analysis
 
 app = FastAPI(
     title="InSeeDent AI Service",
@@ -52,7 +55,7 @@ class SearchRequest(BaseModel):
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "service": "inseedent-ai"}
+    return {"status": "ok", "service": "inseedent-ai", "llm": llm_status()}
 
 
 @app.post("/api/v1/analyze")
@@ -62,8 +65,33 @@ def analyze(req: AnalyzeRequest):
   return result
 
 
+def _chat_with_llm(req: ChatRequest) -> str | None:
+    if get_llm_mode() == "mock":
+        return None
+    prompts = _load_prompts()
+    context = {
+        "incident_id": req.incident_id,
+        "incident_title": req.incident_title,
+        "affected_services": req.affected_services,
+        "latest_analysis": req.latest_analysis,
+        "user_message": req.message,
+    }
+    user_prompt = f"Context:\n{json.dumps(context, indent=2)}\n\nUser question: {req.message}"
+    return invoke_llm(prompts.get("chat_agent", "You are an SRE investigation assistant."), user_prompt, max_tokens=512)
+
+
 @app.post("/api/v1/chat")
 def chat(req: ChatRequest):
+    llm_reply = _chat_with_llm(req)
+    if llm_reply:
+        similar = search_similar(req.incident_title or "", req.message)
+        return {
+            "reply": llm_reply,
+            "session_id": req.session_id or "demo-session",
+            "similar_incidents": similar,
+            "llm_mode": get_llm_mode(),
+        }
+
     msg = req.message.lower()
     service = req.affected_services[0] if req.affected_services else "checkout-service"
 
@@ -95,6 +123,7 @@ def chat(req: ChatRequest):
         "reply": reply,
         "session_id": req.session_id or "demo-session",
         "similar_incidents": similar,
+        "llm_mode": get_llm_mode(),
     }
 
 

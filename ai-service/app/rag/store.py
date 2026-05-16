@@ -26,6 +26,30 @@ _HISTORICAL = [
         "root_cause": "Redis cache eviction increased auth DB load",
         "content": "auth-service JWT redis cache eviction validation errors",
     },
+    {
+        "incident_id": 104,
+        "title": "Elasticsearch yellow cluster — search degradation",
+        "root_cause": "Stuck shard relocation on search-service cluster",
+        "content": "search elasticsearch shard latency query catalog",
+    },
+    {
+        "incident_id": 105,
+        "title": "Recommendation model OOM under load",
+        "root_cause": "Memory limit too low for new embedding model version",
+        "content": "recommendation model-server OOM kubernetes memory embedding",
+    },
+    {
+        "incident_id": 106,
+        "title": "Order idempotency regression — duplicate charges",
+        "root_cause": "Missing idempotency key on retry path in order-service",
+        "content": "order-service payment duplicate charge idempotency postgres",
+    },
+    {
+        "incident_id": 107,
+        "title": "CDN origin 502 burst",
+        "root_cause": "Origin timeout caused edge PoP errors in EU region",
+        "content": "cdn edge 502 origin timeout api-gateway static assets",
+    },
 ]
 
 

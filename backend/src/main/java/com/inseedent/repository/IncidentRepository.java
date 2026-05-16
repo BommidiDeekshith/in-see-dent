@@ -23,4 +23,6 @@ public interface IncidentRepository extends JpaRepository<Incident, Long> {
     List<Incident> findActiveIncidents(@Param("status") String status);
     
     Page<Incident> findAll(Pageable pageable);
+
+    boolean existsByTitle(String title);
 }

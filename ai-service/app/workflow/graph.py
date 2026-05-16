@@ -11,11 +11,13 @@ If langgraph is not installed, the same pipeline runs as a plain Python chain.
 
 from __future__ import annotations
 
+import json
 import os
 from typing import Any, Callable
 
 import yaml
 
+from app.llm.client import get_llm_mode, invoke_llm, parse_rca_json
 from app.workflow.state import IncidentState
 
 try:
@@ -108,6 +110,46 @@ def summarizer_agent(state: IncidentState) -> IncidentState:
     if isinstance(services, str):
         services = [services]
 
+    # Try offline/cloud LLM when LLM_MODE != mock
+    prompts = _load_prompts()
+    llm_payload = {
+        "title": state.get("title"),
+        "description": state.get("description"),
+        "severity": state.get("severity"),
+        "affected_services": services,
+        "logs_findings": state.get("logs_findings"),
+        "metrics_findings": state.get("metrics_findings"),
+        "traces_findings": state.get("traces_findings"),
+        "deployment_findings": state.get("deployment_findings"),
+        "correlation_findings": state.get("correlation_findings"),
+    }
+    llm_user = (
+        "Analyze this production incident and respond with JSON only:\n"
+        '{"root_cause":"...","confidence_score":0.0-1.0,"summary":"...","remediation_suggestions":"..."}\n\n'
+        f"Incident data:\n{json.dumps(llm_payload, indent=2)}"
+    )
+    llm_text = invoke_llm(prompts.get("summarizer_agent", "You are an SRE root cause analyst."), llm_user)
+    parsed = parse_rca_json(llm_text) if llm_text else None
+
+    if parsed:
+        artifacts = state.get("artifacts", [])
+        artifacts.append({
+            "type": "summarizer",
+            "agent": "summarizer",
+            "findings": parsed.get("summary", llm_text[:500]),
+            "confidence": float(parsed.get("confidence_score", 0.8)),
+            "llm_mode": get_llm_mode(),
+        })
+        return {
+            **state,
+            "root_cause": parsed.get("root_cause", ""),
+            "confidence_score": float(parsed.get("confidence_score", 0.8)),
+            "summary": parsed.get("summary", ""),
+            "remediation_suggestions": parsed.get("remediation_suggestions", ""),
+            "artifacts": artifacts,
+        }
+
+    # Rule-based fallback (default when LLM_MODE=mock or Ollama unavailable)
     root_cause = (
         f"Cascading failure in {services[0]}: deployment v2.4.1 increased connection pool pressure, "
         "causing payment-gateway timeouts and elevated 5xx error rate."
@@ -200,6 +242,7 @@ def run_analysis(payload: dict[str, Any]) -> dict[str, Any]:
         "affected_services": result.get("affected_services", []),
         "summary": result.get("summary", ""),
         "remediation_suggestions": result.get("remediation_suggestions", ""),
+        "llm_mode": get_llm_mode(),
         "findings": {
             "logs": result.get("logs_findings"),
             "metrics": result.get("metrics_findings"),

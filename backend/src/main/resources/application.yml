@@ -1,0 +1,64 @@
+spring:
+  application:
+    name: inseedent-backend
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/inseedent
+    username: inseedent
+    password: inseedent
+    driver-class-name: org.postgresql.Driver
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+server:
+  port: 8080
+  servlet:
+    context-path: /
+
+logging:
+  level:
+    root: INFO
+    com.inseedent: DEBUG
+    org.springframework.security: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+
+# JWT Configuration
+jwt:
+  secret: ${JWT_SECRET:your-secret-key-change-in-production-minimum-32-characters-long}
+  expiration: 86400000 # 24 hours in milliseconds
+  refreshExpiration: 604800000 # 7 days in milliseconds
+
+# OpenAI Configuration
+openai:
+  api-key: ${OPENAI_API_KEY:}
+  model: gpt-4-turbo
+
+# Vector DB Configuration
+vector-db:
+  provider: chroma # or pgvector
+  chroma:
+    url: http://localhost:8000
+    collection: inseedent-incidents
+  pgvector:
+    enabled: true
+
+# Observability Mock Configuration
+observability:
+  mock:
+    prometheus:
+      enabled: true
+    loki:
+      enabled: true
+    otel:
+      enabled: true
